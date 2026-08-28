@@ -1,11 +1,19 @@
 (ns warifu.cells.substrate
-  "warifu substrate port — the DI seam between cells and kotoba/@etzhayyim/sdk.
+  "warifu substrate port — the DI seam between cells and a real substrate.
 
   1:1 port of `cells/substrate.py` (the subset the refund cell needs + the
-  loud-failing default). R0 scaffold (ADR-2605302000). Cells depend on the
+  loud-failing default). Cells depend on the
   `SubstratePort` protocol, never on a concrete client. In production an
-  `@etzhayyim/sdk`-backed adapter is injected (R1); tests inject an in-memory
-  fake. Per ADR-2605231525 no platform key is held; money never lives in the
+  real adapter is injected; tests inject an in-memory fake.
+
+  THE REAL ADAPTER IS `warifu.substrate.usdc` (added 2026-08-28). It is a
+  decorator: it wraps a record backend, delegates the eight record methods to
+  it unchanged, and replaces the three that move value (`usdc-balance`,
+  `settle-transfer`, `reverse-settlement`) with USDC on Base L2 via
+  kotoba-lang/erc20 + kotoba-lang/base-l2. This docstring used to name
+  `@etzhayyim/sdk` as that adapter; that adapter never existed here, and the
+  package it named is TypeScript frozen at its 2026-07-01 commits while all
+  six of its dependencies became Clojure (superproject ADR-2608281200). Per ADR-2605231525 no platform key is held; money never lives in the
   cells — `reverse_settlement` emits ERC-4337 UserOps via the adapter.
 
   Conventions (yobel/ports.cljc + mimamori/methods/bond.cljc house style):
@@ -74,11 +82,12 @@
 ;; ── UnwiredSubstrate (loud-failing default sentinel) ──────────────
 
 (defn- unwired-fail
-  "raise NotImplementedError(...) — the warifu R0 forgotten-injection guard."
+  "The forgotten-injection guard: fail loudly rather than silently not moving money."
   [op]
   (throw (ex-info
-          (str "warifu R0: substrate '" op "' not wired — inject "
-               "@etzhayyim/sdk adapter or an in-memory fake")
+          (str "warifu: substrate '" op "' not wired — inject "
+               "warifu.substrate.usdc/usdc-substrate (real USDC on Base) "
+               "or an in-memory fake")
           {:warifu/unwired-substrate true :op op})))
 
 (defrecord UnwiredSubstrate []

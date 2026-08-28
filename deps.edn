@@ -1,5 +1,24 @@
 {:paths ["src"]
- :aliases {:test {:extra-paths ["test"]
-                  :extra-deps {io.github.cognitect-labs/test-runner
-                               {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
-                  :main-opts ["-m" "cognitect.test-runner"]}}}
+ :deps {io.github.kotoba-lang/erc20
+        {:git/url "https://github.com/kotoba-lang/erc20"
+         :git/sha "0040a5c92da2ddb2bea69de3466536db9063d0ec"}
+        io.github.kotoba-lang/base-l2
+        {:git/url "https://github.com/kotoba-lang/base-l2"
+         :git/sha "6f741ec4b2df4112db2c7bd23c5327a8ee17faa9"}}
+ :aliases
+ {;; `-r ".*"` is load-bearing, not decoration. warifu's suites are named
+  ;; `warifu.cells.test-refund` (test- PREFIX), and cognitect-test-runner's
+  ;; default discovery regex is `.*-test$` (SUFFIX). Measured 2026-08-28 before
+  ;; this line existed: `bb test` ran 51 tests / 195 assertions while
+  ;; `clojure -M:test` ran 3 / 7 — it found only `warifu.repository-contract-test`
+  ;; and silently skipped the other 48. A JVM green meant nothing.
+  :test {:extra-paths ["test"]
+         ;; cheshire is a TEST-only dep: `warifu.test-lexicons` requires it and
+         ;; babashka has it built in, so the bb runner never needed it declared.
+         ;; The JVM runner does.
+         :extra-deps {io.github.cognitect-labs/test-runner
+                      {:git/tag "v0.5.1" :git/sha "dfb30dd"}
+                      cheshire/cheshire {:mvn/version "5.13.0"}}
+         :main-opts ["-m" "cognitect.test-runner" "-r" ".*"]
+         :exec-fn cognitect.test-runner.api/test
+         :exec-args {:namespace-regex ".*"}}}}
