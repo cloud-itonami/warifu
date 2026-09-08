@@ -9,7 +9,7 @@
   Entity classes (warifu/kind): auth_hold | capture | settlement | refund | dispute.
   Python AssertionError → (throw (ex-info ...)). A fact's value type is :str (string?) or :int
   (integer?); the optional invariant predicate enforces e.g. the zero-fee + T+0 invariants."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (def kinds #{"auth_hold" "capture" "settlement" "refund" "dispute"})
 (def fundings #{"debit" "credit"})

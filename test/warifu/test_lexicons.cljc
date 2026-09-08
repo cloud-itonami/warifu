@@ -11,7 +11,7 @@
   (:require [clojure.test :refer [deftest is]]
             [clojure.java.io :as io]
             [clojure.edn :as edn]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [cheshire.core :as json]
             [warifu.cells.authorize :as authz]
             [warifu.cells.dispute :as disp]))
