@@ -11,7 +11,7 @@
   implementation whose selectors are pinned constants verified against
   keccak256 in erc20's own CI. If the sponsored path encoded a wrong
   recipient or a wrong amount, the two would disagree."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.lang.text] [clojure.test :refer [deftest is testing]]
             [warifu.cells.substrate :as substrate]
             [warifu.substrate.usdc :as usdc]
             [warifu.cells.refund :as refund]
@@ -105,11 +105,11 @@
     (testing "the call went to the USDC contract with balanceOf calldata"
       (let [body (:body (first @seen))
             s (if (string? body) body (pr-str body))]
-        (is (clojure.string/includes? (clojure.string/lower-case s)
-                                      (clojure.string/lower-case usdc/base-usdc)))
-        (is (clojure.string/includes?
-             (clojure.string/lower-case s)
-             (clojure.string/lower-case (erc20/balance-of holder-addr))))))))
+        (is (kotoba.lang.text/includes? (kotoba.lang.text/lower s)
+                                      (kotoba.lang.text/lower usdc/base-usdc)))
+        (is (kotoba.lang.text/includes?
+             (kotoba.lang.text/lower s)
+             (kotoba.lang.text/lower (erc20/balance-of holder-addr))))))))
 
 (deftest balance-does-not-go-through-a-double
   (testing "a uint256 larger than 2^53 survives — the reason erc20 returns a string"
