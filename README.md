@@ -18,7 +18,7 @@ bb test           # dependency-free subset — 51 tests / 195 assertions
 suite, because babashka cannot load `org.clojure/data.json`, which
 `kotoba-lang/base-l2`'s JSON-RPC envelopes need. The JVM runner discovers test
 namespaces by regex, so a new test file is picked up there automatically;
-`run_tests.clj`'s list is hand-maintained and can go stale.
+`run_tests.kotoba`'s list is hand-maintained and can go stale.
 
 (Until 2026-08-28 `clojure -M:test` ran **3** of the 51 tests. warifu's suites
 are named `test-…` with the prefix, and cognitect-test-runner's default
