@@ -3,7 +3,7 @@
 Run all standalone suites:
 
 ```sh
-bb test
+kbb -M:test
 ```
 
 The suite covers authorize, capture, settle, refund, dispute, EAVT schema,
@@ -13,5 +13,5 @@ and repository layout contracts.
 For the JVM repository contract:
 
 ```sh
-clojure -M:test
+kbb -M:test
 ```

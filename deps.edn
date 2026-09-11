@@ -14,8 +14,8 @@
  {;; `-r ".*"` is load-bearing, not decoration. warifu's suites are named
   ;; `warifu.cells.test-refund` (test- PREFIX), and cognitect-test-runner's
   ;; default discovery regex is `.*-test$` (SUFFIX). Measured 2026-08-28 before
-  ;; this line existed: `bb test` ran 51 tests / 195 assertions while
-  ;; `clojure -M:test` ran 3 / 7 — it found only `warifu.repository-contract-test`
+  ;; this line existed: `kbb -M:test` ran 51 tests / 195 assertions while
+  ;; `kbb -M:test` ran 3 / 7 — it found only `warifu.repository-contract-test`
   ;; and silently skipped the other 48. A JVM green meant nothing.
   :test {:extra-paths ["test"]
          ;; cheshire is a TEST-only dep: `warifu.test-lexicons` requires it and
