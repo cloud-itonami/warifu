@@ -9,7 +9,7 @@
 ;;
 ;; So a green here does NOT mean the suite passed. The canonical runner is
 ;;
-;;     clojure -M:test        64 tests / 225 assertions
+;;     kbb -M:test        64 tests / 225 assertions
 ;;     bb test                51 tests / 195 assertions   (this file)
 ;;
 ;; and crucially the JVM one DISCOVERS namespaces by regex (`-r ".*"` in

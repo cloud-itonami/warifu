@@ -10,17 +10,17 @@ Canonical actor metadata and owned contracts are EDN (`manifest.edn`,
 ## Running the tests
 
 ```bash
-clojure -M:test   # canonical — 64 tests / 225 assertions
-bb test           # dependency-free subset — 51 tests / 195 assertions
+kbb -M:test   # canonical — 64 tests / 225 assertions
+kbb -M:test           # dependency-free subset — 51 tests / 195 assertions
 ```
 
-`bb test` is a **subset**, not the suite: it cannot load the USDC adapter's
+`kbb -M:test` is a **subset**, not the suite: it cannot load the USDC adapter's
 suite, because babashka cannot load `org.clojure/data.json`, which
 `kotoba-lang/base-l2`'s JSON-RPC envelopes need. The JVM runner discovers test
 namespaces by regex, so a new test file is picked up there automatically;
 `run_tests.kotoba`'s list is hand-maintained and can go stale.
 
-(Until 2026-08-28 `clojure -M:test` ran **3** of the 51 tests. warifu's suites
+(Until 2026-08-28 `kbb -M:test` ran **3** of the 51 tests. warifu's suites
 are named `test-…` with the prefix, and cognitect-test-runner's default
 discovery regex is `.*-test$` with the suffix, so it found only
 `warifu.repository-contract-test` and silently skipped the rest. `-r ".*"` in
